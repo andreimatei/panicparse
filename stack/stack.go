@@ -341,6 +341,8 @@ type Call struct {
 	RemoteSrcPath string
 	// Line is the line number.
 	Line int
+	// !!! comment
+	PCOffset int64
 	// SrcName is the base file name of the source file.
 	SrcName string
 	// DirSrc is one directory plus the file name of the source file. It is a
@@ -372,7 +374,7 @@ type Call struct {
 // For test main, it initializes Location only with Stdlib.
 //
 // It does its best educated guess for ImportPath.
-func (c *Call) init(srcPath string, line int) {
+func (c *Call) init(srcPath string, line int, pcOffset int64) {
 	c.Line = line
 	if srcPath != "" {
 		c.RemoteSrcPath = srcPath
@@ -388,6 +390,7 @@ func (c *Call) init(srcPath string, line int) {
 		}
 	}
 	c.ImportPath = c.Func.ImportPath
+	c.PCOffset = pcOffset
 }
 
 const testMainSrc = "_test" + string(os.PathSeparator) + "_testmain.go"
